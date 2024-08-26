@@ -145,10 +145,19 @@ GROUP BY
 
 ## 9. Mostrar el numero de comentarios que tiene un comentario
 ```sql
-SELECT c.comentario AS comentario, u.nombre AS usuario, count(c.subIdComentario) AS numero_comentarios
-FROM Comentario c
-JOIN Usiario u ON  c.idUsuario = u.idUsuario
-GROUP BY comentario
+SELECT 
+    c.comentario AS comentario, 
+    COUNT(sub.idComentario) AS numero_subcomentarios
+FROM 
+    Comentario c
+LEFT JOIN 
+    Comentario sub ON c.idComentario = sub.subIdComentario
+WHERE 
+    c.subIdComentario IS NULL
+GROUP BY 
+    c.comentario
+HAVING 
+    COUNT(sub.idComentario) > 0;
 ```
 
 ## 10. Mostrar los usuarios con los las valoraciones promedio mas altas
