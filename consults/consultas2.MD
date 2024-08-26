@@ -143,21 +143,13 @@ GROUP BY
     u.nombreUsuario;
 ```
 
-## 9. Mostrar el promedio de valoracion de los documentos de usuario
+## 9. Mostrar el numero de comentarios que tiene un comentario
 ```sql
-SELECT 
-    u.nombreUsuario, 
-    AVG(v.valoracion) AS promedioValoracion
-FROM 
-    Usuario u
-JOIN 
-    Valora v ON d.idDocumento = v.idDocumento
-WHERE 
-    u.idUsuario = [idUsuario]
-GROUP BY 
-    u.nombreUsuario;
+SELECT c.comentario AS comentario, u.nombre AS usuario, count(c.subIdComentario) AS numero_comentarios
+FROM Comentario c
+JOIN Usiario u ON  c.idUsuario = u.idUsuario
+GROUP BY c.comentario
 ```
-
 
 ## 10. Mostrar los usuarios con los las valoraciones promedio mas altas
 
