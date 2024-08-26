@@ -148,7 +148,7 @@ GROUP BY
 SELECT c.comentario AS comentario, u.nombre AS usuario, count(c.subIdComentario) AS numero_comentarios
 FROM Comentario c
 JOIN Usiario u ON  c.idUsuario = u.idUsuario
-GROUP BY c.comentario
+GROUP BY comentario
 ```
 
 ## 10. Mostrar los usuarios con los las valoraciones promedio mas altas
