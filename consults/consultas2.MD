@@ -43,7 +43,7 @@ SELECT
     d.tituloDoc AS titulo, 
     COUNT(de.idDocumento) AS Descargas
 FROM 
-    Document d, Descarga AS de
+    Documento d, Descarga
 JOIN 
     Descarga de ON d.idDocumento = de.idDocumento
 GROUP BY 
@@ -107,9 +107,6 @@ GROUP BY
 ORDER BY 
     totalDescargas DESC
 LIMIT 10;
-
-UNION ALL
-
 ```
 
 ## 7. Mostrar los documentos privados con mas descargas
@@ -137,9 +134,7 @@ SELECT
     u.nombreUsuario, 
     AVG(v.valoracion) AS promedioValoracion
 FROM 
-    Usuario u
-JOIN 
-    Documento d ON u.idUsuario = d.idUsuario
+    Usuario u, Documento d
 JOIN 
     Valora v ON d.idDocumento = v.idDocumento
 WHERE 
@@ -156,8 +151,6 @@ SELECT
 FROM 
     Usuario u
 JOIN 
-    Documento d ON u.idUsuario = d.idUsuario
-JOIN 
     Valora v ON d.idDocumento = v.idDocumento
 WHERE 
     u.idUsuario = [idUsuario]
@@ -166,16 +159,14 @@ GROUP BY
 ```
 
 
-## 10. Mostrar los usuarios con los
+## 10. Mostrar los usuarios con los las valoraciones promedio mas altas
 
 ```sql
 SELECT 
     u.nombreUsuario, 
     AVG(v.valoracion) AS promedioValoracion
 FROM 
-    Usuario u
-JOIN 
-    Documento d ON u.idUsuario = d.idUsuario
+    Usuario u, Documento d
 JOIN 
     Valora v ON d.idDocumento = v.idDocumento
 GROUP BY 
