@@ -1,0 +1,79 @@
+-- 1 Obtener todos los documentos publicados por un usuario específico
+SELECT d.idDocumento, d.tituloDoc, d.URL
+FROM Documento d
+INNER JOIN Publica p ON d.idDocumento = p.idDocumento
+INNER JOIN Usuario u ON p.idUsuario = u.idUsuario
+WHERE u.idUsuario = 1;
+
+-- 2  Listar los documentos que han sido valorados con un puntaje inferior a 3.
+SELECT d.idDocumento, d.tituloDoc, p.fechaPublicacion
+FROM Documento d
+INNER JOIN Publica p ON d.idDocumento = p.idDocumento
+ORDER BY p.fechaPublicacion DESC
+LIMIT 5;
+
+-- 3 Listar todos los usuarios y los documentos que nunca han valorado
+SELECT u.idUsuario, u.nombreUsuario, d.idDocumento, d.tituloDoc
+FROM Usuario u
+CROSS JOIN Documento d
+LEFT JOIN Valora v ON u.idUsuario = v.idUsuario AND d.idDocumento = v.idDocumento
+WHERE v.idValora IS NULL;
+
+-- 4 Listar todas las respuestas a un documento específico
+SELECT c.idComentario, c.comentario, c.fecha
+FROM Comentario c
+WHERE c.idDocumento = 2;
+
+-- 5 Ver el historial de visualizaciones de un documento por usuario
+SELECT m.fechaMira, u.nombreUsuario
+FROM Mira m
+INNER JOIN Usuario u ON m.idUsuario = u.idUsuario
+WHERE m.idDocumento = 1 AND u.idUsuario = 1;
+
+-- 6 Obtener el documento con más usuarios
+SELECT d.idDocumento, d.URL, COUNT(DISTINCT m.idUsuario) AS TotalUsuarios
+FROM Documento d
+INNER JOIN Mira m ON d.idDocumento = m.idDocumento
+GROUP BY d.idDocumento, d.URL
+ORDER BY TotalUsuarios DESC
+LIMIT 1;
+
+--  7 Obtener el documento con menos usuarios
+SELECT d.idDocumento, d.URL, COUNT(c.idComentario) AS TotalComentarios
+FROM Documento d
+LEFT JOIN Comentario c ON d.idDocumento = c.idDocumento
+GROUP BY d.idDocumento, d.URL
+ORDER BY TotalComentarios ASC
+LIMIT 1;
+
+-- 8 Obtener los usuarios que no han publicado documentos
+SELECT u.idUsuario, u.nombreUsuario
+FROM Usuario u
+LEFT JOIN Publica p ON u.idUsuario = p.idUsuario
+WHERE p.idUsuario IS NULL;
+
+-- 9 Listar todos los documentos que han sido publicados y descargados al menos una vez:
+SELECT d.idDocumento, d.tituloDoc
+FROM Documento d
+WHERE EXISTS (SELECT 1 FROM Publica p WHERE p.idDocumento = d.idDocumento)
+AND EXISTS (SELECT 1 FROM Descarga ds WHERE ds.idDocumento = d.idDocumento);
+
+-- 10 Listar todas las publicaciones realizadas en un rango de fechas específico
+SELECT p.idPublica, p.fechaPublicacion, u.nombreUsuario, d.tituloDoc
+FROM Publica p
+INNER JOIN Usuario u ON p.idUsuario = u.idUsuario
+INNER JOIN Documento d ON p.idDocumento = d.idDocumento
+WHERE p.fechaPublicacion BETWEEN '2024-08-01' AND '2024-08-31';
+
+-- 11 Contar el número de documentos con visibilidad 'Publico' 
+SELECT COUNT(*) AS TotalDocumentosPublicos
+FROM Documento
+WHERE visibilidad = 'Publico';
+
+-- 12 Obtener el documento más comentado
+SELECT d.idDocumento, d.tituloDoc, COUNT(c.idComentario) AS TotalComentarios
+FROM Documento d
+INNER JOIN Comentario c ON d.idDocumento = c.idDocumento
+GROUP BY d.idDocumento
+ORDER BY TotalComentarios DESC
+LIMIT 1;
