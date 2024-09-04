@@ -179,6 +179,7 @@ CREATE TABLE IF NOT EXISTS `SistemaWebDocTICSchema`.`Valora` (
   `idDocumento` INT NOT NULL,
   `valoracion` INT NOT NULL,
   PRIMARY KEY (`idValora`),
+  CHECK (`valoracion` >= 1 AND `valoracion` <= 5),
   INDEX `fk_Publica_Usuario1_idx` (`idUsuario` ASC) VISIBLE,
   INDEX `fk_Publica_Documento1_idx` (`idDocumento` ASC) VISIBLE,
   CONSTRAINT `fk_Publica_Usuario100`
