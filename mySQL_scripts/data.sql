@@ -38,32 +38,32 @@ INSERT INTO `Contraseña` (`contraseña`, `estado`, `fecha`, `idUsuario`) VALUES
 -- -----------------------------------------------------
 -- Tabla: Documento
 -- -----------------------------------------------------
-INSERT INTO `Documento` (`tituloDoc`, `visibilidad`, `URL`, `descripcion`) VALUES
-('Manual de Usuario', 'Publico', 'http://docs.example.com/manual_usuario.pdf', 'Guía completa para el uso del sistema'),
-('Política de Privacidad', 'Publico', 'http://docs.example.com/politica_privacidad.pdf', 'Detalles sobre el manejo de datos personales'),
-('Reporte Financiero Q1', 'Privado', 'http://docs.example.com/reporte_financiero_q1.pdf', 'Análisis financiero del primer trimestre'),
-('Plan de Marketing 2024', 'Privado', 'http://docs.example.com/plan_marketing_2024.pdf', 'Estrategias de marketing para el año 2024'),
-('Procedimientos de Seguridad', 'Publico', 'http://docs.example.com/procedimientos_seguridad.pdf', 'Protocolos de seguridad internos'),
-('Informe de Ventas Julio', 'Privado', 'http://docs.example.com/informe_ventas_julio.pdf', 'Resumen de ventas del mes de julio'),
-('Guía de Integración', 'Publico', 'http://docs.example.com/guia_integracion.pdf', 'Pasos para integrar nuevos empleados'),
-('Política de Recursos Humanos', 'Publico', 'http://docs.example.com/politica_rrhh.pdf', 'Normativas y políticas del departamento de RRHH'),
-('Manual Técnico', 'Privado', 'http://docs.example.com/manual_tecnico.pdf', 'Documentación técnica del sistema'),
-('Presentación Corporativa', 'Publico', 'http://docs.example.com/presentacion_corporativa.pdf', 'Información general sobre la empresa');
+INSERT INTO `Documento` (`tituloDoc`, `visibilidad`, `URL`, `descripcion`, `idCategoria`) VALUES
+('Manual de Usuario', 'Publico', 'http://docs.example.com/manual_usuario.pdf', 'Guía completa para el uso del sistema', 1),
+('Política de Privacidad', 'Publico', 'http://docs.example.com/politica_privacidad.pdf', 'Detalles sobre el manejo de datos personales', 1),
+('Reporte Financiero Q1', 'Privado', 'http://docs.example.com/reporte_financiero_q1.pdf', 'Análisis financiero del primer trimestre', 2),
+('Plan de Marketing 2024', 'Privado', 'http://docs.example.com/plan_marketing_2024.pdf', 'Estrategias de marketing para el año 2024', 3),
+('Procedimientos de Seguridad', 'Publico', 'http://docs.example.com/procedimientos_seguridad.pdf', 'Protocolos de seguridad internos', 6),
+('Informe de Ventas Julio', 'Privado', 'http://docs.example.com/informe_ventas_julio.pdf', 'Resumen de ventas del mes de julio', 5),
+('Guía de Integración', 'Publico', 'http://docs.example.com/guia_integracion.pdf', 'Pasos para integrar nuevos empleados', 8),
+('Política de Recursos Humanos', 'Publico', 'http://docs.example.com/politica_rrhh.pdf', 'Normativas y políticas del departamento de RRHH', 4),
+('Manual Técnico', 'Privado', 'http://docs.example.com/manual_tecnico.pdf', 'Documentación técnica del sistema', 7),
+('Presentación Corporativa', 'Publico', 'http://docs.example.com/presentacion_corporativa.pdf', 'Información general sobre la empresa', 9);
 
 -- -----------------------------------------------------
 -- Tabla: Publica
 -- -----------------------------------------------------
-INSERT INTO `Publica` (`fechaPublicacion`, `idUsuario`, `idDocumento`) VALUES
-('2024-08-21 10:30:00', 1, 1),
-('2024-08-21 10:45:00', 2, 1),
-('2024-08-21 11:00:00', 3, 1),
-('2024-08-21 11:15:00', 4, 1),
-('2024-08-21 11:30:00', 5, 5),
-('2024-08-21 11:45:00', 6, 5),
-('2024-08-21 12:00:00', 5, 7),
-('2024-08-21 12:15:00', 8, 8),
-('2024-08-21 12:30:00', 9, 9),
-('2024-08-21 12:45:00', 10, 10);
+INSERT INTO `Publica` (`fechaPublicacion`, `idUsuario`, `idDocumento`, `rol`) VALUES
+('2024-08-21 10:30:00', 1, 1, 'Autor'),
+('2024-08-21 10:45:00', 2, 1, 'Coautor'),
+('2024-08-21 11:00:00', 3, 1, 'Coautor'),
+('2024-08-21 11:15:00', 4, 1, 'Coautor'),
+('2024-08-21 11:30:00', 5, 5, 'Autor'),
+('2024-08-21 11:45:00', 6, 5, 'Coautor'),
+('2024-08-21 12:00:00', 5, 7, 'Autor'),
+('2024-08-21 12:15:00', 8, 8, 'Autor'),
+('2024-08-21 12:30:00', 9, 9, 'Autor'),
+('2024-08-21 12:45:00', 10, 10, 'Autor');
 
 -- -----------------------------------------------------
 -- Tabla: Descarga
@@ -113,17 +113,17 @@ INSERT INTO `Valora` (`fechaValoracion`, `idUsuario`, `idDocumento`, `valoracion
 -- -----------------------------------------------------
 -- Tabla: Categoria
 -- -----------------------------------------------------
-INSERT INTO `Categoria` (`idCategoria`, `nombre`, `idDocumento`, `subIdCategoria`) VALUES
-(1, 'Tecnología', 1, NULL),
-(2, 'Data Analysis', 3, 1),
-(3, 'Marketing', 4, NULL),
-(4, 'Recursos Humanos', 8, NULL),
-(5, 'Ventas', 6, NULL),
-(6, 'Seguridad', 5, NULL),
-(7, 'Operaciones', 9, NULL),
-(8, 'Diseño', 7, NULL),
-(9, 'Atención al Cliente', 10, 2),
-(10, 'Logística', 2, NULL);
+INSERT INTO `Categoria` (`idCategoria`, `nombre`, `subIdCategoria`) VALUES
+(1, 'Tecnología', NULL),
+(2, 'Data Analysis', 1),
+(3, 'Marketing', NULL),
+(4, 'Recursos Humanos', NULL),
+(5, 'Ventas', NULL),
+(6, 'Seguridad', NULL),
+(7, 'Operaciones', NULL),
+(8, 'Diseño', NULL),
+(9, 'Atención al Cliente', 2),
+(10, 'Logística', NULL);
 
 -- -----------------------------------------------------
 -- Tabla: Comentario
