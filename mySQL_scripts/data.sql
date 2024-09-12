@@ -36,6 +36,21 @@ INSERT INTO `Contraseña` (`contraseña`, `estado`, `fecha`, `idUsuario`) VALUES
 ('User1234$', 'Inactiva', '2024-08-21 10:15:00', 10);
 
 -- -----------------------------------------------------
+-- Tabla: Categoria
+-- -----------------------------------------------------
+INSERT INTO `Categoria` (`idCategoria`, `nombre`, `subIdCategoria`) VALUES
+(1, 'Tecnología', NULL),
+(2, 'Data Analysis', 1),
+(3, 'Marketing', NULL),
+(4, 'Recursos Humanos', NULL),
+(5, 'Ventas', NULL),
+(6, 'Seguridad', NULL),
+(7, 'Operaciones', NULL),
+(8, 'Diseño', NULL),
+(9, 'Atención al Cliente', 2),
+(10, 'Logística', NULL);
+
+-- -----------------------------------------------------
 -- Tabla: Documento
 -- -----------------------------------------------------
 INSERT INTO `Documento` (`tituloDoc`, `visibilidad`, `URL`, `descripcion`, `idCategoria`) VALUES
@@ -109,21 +124,6 @@ INSERT INTO `Valora` (`fechaValoracion`, `idUsuario`, `idDocumento`, `valoracion
 ('2024-08-21 15:35:00', 8, 8, 4),
 ('2024-08-21 15:40:00', 9, 9, 5),
 ('2024-08-21 15:45:00', 10, 10, 4);
-
--- -----------------------------------------------------
--- Tabla: Categoria
--- -----------------------------------------------------
-INSERT INTO `Categoria` (`idCategoria`, `nombre`, `subIdCategoria`) VALUES
-(1, 'Tecnología', NULL),
-(2, 'Data Analysis', 1),
-(3, 'Marketing', NULL),
-(4, 'Recursos Humanos', NULL),
-(5, 'Ventas', NULL),
-(6, 'Seguridad', NULL),
-(7, 'Operaciones', NULL),
-(8, 'Diseño', NULL),
-(9, 'Atención al Cliente', 2),
-(10, 'Logística', NULL);
 
 -- -----------------------------------------------------
 -- Tabla: Comentario
