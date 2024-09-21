@@ -36,15 +36,15 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `SistemaWebDocTICSchema`.`Contraseña`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `SistemaWebDocTICSchema`.`Contraseña` (
-  `idContraseña` INT NOT NULL AUTO_INCREMENT,
-  `contraseña` VARCHAR(150) NOT NULL,
+CREATE TABLE IF NOT EXISTS `SistemaWebDocTICSchema`.`Contrasena` (
+  `idContrasena` INT NOT NULL AUTO_INCREMENT,
+  `contrasena` VARCHAR(150) NOT NULL,
   `estado` ENUM('Activa', 'Inactiva') NOT NULL,
   `fecha` DATETIME NOT NULL,
   `idUsuario` INT NOT NULL,
-  PRIMARY KEY (`idContraseña`),
-  INDEX `fk_CONTRASEÑA_USUARIO_idx` (`idUsuario` ASC) VISIBLE,
-  CONSTRAINT `fk_CONTRASEÑA_USUARIO`
+  PRIMARY KEY (`idContrasena`),
+  INDEX `fk_CONTRASENA_USUARIO_idx` (`idUsuario` ASC) VISIBLE,
+  CONSTRAINT `fk_CONTRASENA_USUARIO`
     FOREIGN KEY (`idUsuario`)
     REFERENCES `SistemaWebDocTICSchema`.`Usuario` (`idUsuario`)
     ON DELETE NO ACTION
