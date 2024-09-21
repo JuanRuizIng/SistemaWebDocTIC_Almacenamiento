@@ -56,7 +56,7 @@ ENGINE = InnoDB;
 -- Table `SistemaWebDocTICSchema`.`Categoria`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `SistemaWebDocTICSchema`.`Categoria` (
-  `idCategoria` INT NOT NULL,
+  `idCategoria` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(100) NOT NULL,
   `subIdCategoria` INT NULL,
   PRIMARY KEY (`idCategoria`),
