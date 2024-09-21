@@ -23,7 +23,7 @@ INSERT INTO `SistemaWebDocTICSchema`.`Usuario` (`nombreUsuario`, `deptoOrigen`, 
 -- -----------------------------------------------------
 -- Tabla: Contraseña
 -- -----------------------------------------------------
-INSERT INTO `Contraseña` (`contraseña`, `estado`, `fecha`, `idUsuario`) VALUES
+INSERT INTO `Contrasena` (`contrasena`, `estado`, `fecha`, `idUsuario`) VALUES
 ('Passw0rd!', 'Activa', '2024-08-21 08:00:00', 1),
 ('Secure123$', 'Activa', '2024-08-21 08:15:00', 2),
 ('MyPass#456', 'Activa', '2024-08-21 08:30:00', 3),
