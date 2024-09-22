@@ -1,5 +1,6 @@
 package com.example.apiDocsTICS.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +19,7 @@ public class ComentarioServiceImp implements IComentarioService {
     @Autowired IComentarioRepository comentarioRepository;
     @Override
     public String crearComentario(ComentarioModel comentario) {
+        comentario.setFecha(LocalDateTime.now());
         comentarioRepository.save(comentario);
         return "El comentario con id " + comentario.getIdComentario() + " ha sido creado";
     }

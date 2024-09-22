@@ -15,19 +15,21 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table(name="Valora")
+@Table(name="Descarga")
 @AllArgsConstructor
 @NoArgsConstructor
-public class ValoraModel {
+public class DescargaModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idValora;
-    private LocalDateTime fechaValoracion;
+    private int idDescarga;
+
+    private LocalDateTime fechaDescarga;
+
     @ManyToOne
-    @JoinColumn(name="idUsuario")
-    private UsuarioModel idUsuario;
+    @JoinColumn(name = "idUsuario")
+    private UsuarioModel usuario;
+
     @ManyToOne
-    @JoinColumn(name="idDocumento")
-    private DocumentoModel idDocumento;
-    private Integer valoracion;
+    @JoinColumn(name = "idDocumento")
+    private DocumentoModel documento;
 }

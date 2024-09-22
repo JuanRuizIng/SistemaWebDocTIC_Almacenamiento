@@ -6,12 +6,7 @@ import com.example.apiDocsTICS.Exception.RecursoNoEncontradoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.apiDocsTICS.Model.UsuarioModel;
 import com.example.apiDocsTICS.Service.IUsuarioService;
@@ -40,6 +35,14 @@ public class UsuarioController {
     public ResponseEntity<List<UsuarioModel>> listarUsuarios(){
         return new ResponseEntity<>(usuarioService.listarUsuarios(), HttpStatus.OK);
     }
+    @DeleteMapping("/eliminarusuario/{id}")
+    public ResponseEntity<String>  eliminarUsuario(@PathVariable int id){
+        try{
+            usuarioService.eliminarUsuario(id);
+            return ResponseEntity.ok("Usuario eliminado");
+        }catch (RecursoNoEncontradoException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 
-    //FALTAN MÁS MÉTODOS CRUD
 }

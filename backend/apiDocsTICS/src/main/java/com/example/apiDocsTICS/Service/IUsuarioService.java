@@ -9,5 +9,5 @@ public interface IUsuarioService{
     String crearUsuario(UsuarioModel usuario);
     UsuarioModel buscarUsuarioPorId(int idUsuario);
     List<UsuarioModel> listarUsuarios();
-    //FALTAN MÁS MÉTODOS CRUD
+    String eliminarUsuario(int idUsuario);
 }

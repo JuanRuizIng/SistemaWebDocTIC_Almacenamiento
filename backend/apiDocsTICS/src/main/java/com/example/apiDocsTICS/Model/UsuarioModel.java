@@ -27,4 +27,8 @@ public class UsuarioModel {
     private String correoUsuario;
     private String preguntaSecreta;
     private String respPregunSecre;
+
+    public UsuarioModel(Integer idUsuario) {
+        this.idUsuario = idUsuario;
+    }
 }

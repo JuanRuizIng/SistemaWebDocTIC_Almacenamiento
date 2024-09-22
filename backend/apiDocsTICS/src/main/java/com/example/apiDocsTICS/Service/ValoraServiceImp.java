@@ -1,5 +1,6 @@
 package com.example.apiDocsTICS.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +16,7 @@ public class ValoraServiceImp implements IValoraService{
     @Autowired IValoraRepository valoraRepository;
     @Override
     public String crearValoracion(ValoraModel valoracion) {
+        valoracion.setFechaValoracion(LocalDateTime.now());
         valoraRepository.save(valoracion);
         return "La valoracion con Id "+ valoracion.getIdValora() + " fue creada con exito";
     }

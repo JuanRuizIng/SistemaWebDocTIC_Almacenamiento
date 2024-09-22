@@ -30,5 +30,15 @@ public class UsuarioServiceImp implements IUsuarioService {
         return usuarioRepository.findAll();
     }
 
-    //FALTAN MÁS METODOS CRUD
+    @Override
+    public String eliminarUsuario(int idUsuario){
+        if(usuarioRepository.existsById(idUsuario)) {
+            usuarioRepository.deleteById(idUsuario);
+            return "El usuario " + idUsuario + " eliminado con exito";
+        } else {
+            throw new RecursoNoEncontradoException("El usuario con id "+idUsuario+" no existe");
+        }
+    }
+
+
 }
