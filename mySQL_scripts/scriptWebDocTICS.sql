@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `SistemaWebDocTICSchema`.`Contrasena` (
   CONSTRAINT `fk_CONTRASENA_USUARIO`
     FOREIGN KEY (`idUsuario`)
     REFERENCES `SistemaWebDocTICSchema`.`Usuario` (`idUsuario`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
