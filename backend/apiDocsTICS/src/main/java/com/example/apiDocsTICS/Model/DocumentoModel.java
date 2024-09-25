@@ -37,4 +37,8 @@ public class DocumentoModel {
     @ManyToOne
     @JoinColumn(name="idCategoria")
     private CategoriaModel idCategoria;
+    
+    public DocumentoModel(Integer idDocumento){
+        this.idDocumento = idDocumento;
+    }
 }

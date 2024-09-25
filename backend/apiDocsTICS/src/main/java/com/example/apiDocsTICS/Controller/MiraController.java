@@ -3,7 +3,6 @@ package com.example.apiDocsTICS.Controller;
 
 import java.util.List;
 
-import com.example.apiDocsTICS.Exception.RecursoExistente;
 import com.example.apiDocsTICS.Exception.RecursoNoEncontradoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,7 +40,7 @@ public class MiraController {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
-    @GetMapping("obtener")
+    @GetMapping("/obtener")
     public ResponseEntity<List<MiraModel>> obtenerMira() {
         return new ResponseEntity<>(miraService.obtenerMira(), HttpStatus.OK);
     }

@@ -10,7 +10,7 @@ import com.example.apiDocsTICS.Model.UsuarioModel;
 import com.example.apiDocsTICS.Model.DocumentoModel;
 
 public interface IMiraRepository extends JpaRepository<MiraModel, Integer> {
-Optional<MiraModel> findByIdUsuario(UsuarioModel idUsuario);
-Optional<MiraModel> findByIdDocumento(DocumentoModel idDocumento);
-Optional<MiraModel> findByIdDocumentoAndIdUsuario(UsuarioModel idUsuario, DocumentoModel idDocumento);
+    List<MiraModel> findByIdUsuario(UsuarioModel usuario);
+    List<MiraModel> findByIdDocumento(DocumentoModel documento);
+    Optional<MiraModel> findByIdDocumentoAndIdUsuario(DocumentoModel documento, UsuarioModel usuario);
 }

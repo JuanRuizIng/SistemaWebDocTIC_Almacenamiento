@@ -1,6 +1,7 @@
 package com.example.apiDocsTICS.Service;
 
-import com.example.apiDocsTICS.Service.IMiraService;
+import java.time.LocalDateTime;
+
 import com.example.apiDocsTICS.Model.MiraModel;
 import com.example.apiDocsTICS.Model.DocumentoModel;
 import com.example.apiDocsTICS.Model.UsuarioModel;
@@ -12,69 +13,53 @@ import com.example.apiDocsTICS.Repository.IUsuarioRepository;
 import com.example.apiDocsTICS.Exception.RecursoNoEncontradoException;
 import com.example.apiDocsTICS.Exception.RecursoExistente;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class MiraServiceImp  implements IMiraService {
+public class MiraServiceImp implements IMiraService {
     @Autowired
     IUsuarioRepository usuarioRepository;
     @Autowired
     IMiraRepository miraRepository;
+    @Autowired
+    IDocumentoRepository documentoRepository;
 
     @Override
-    public List<MiraModel> obtenerMira(){
+    public List<MiraModel> obtenerMira() {
         return miraRepository.findAll();
     }
 
     @Override
     public List<MiraModel> obtenerMiraByUsuario(Integer idUsuario) {
-        int idU;
-        idU = idUsuario;
-        Optional<UsuarioModel> usuarioOpt = usuarioRepository.findById(idU);
-        if (usuarioOpt.isPresent()) {
-            String nombreUsuario = usuarioOpt.get().getNombreUsuario();
-            Optional<MiraModel> miraOpt = miraRepository.findByIdUsuario(new UsuarioModel(idU));
-            return miraOpt.map(Collections::singletonList).orElse(Collections.emptyList());
-        } else {
-            throw new RecursoNoEncontradoException("No se encuentra el usuario" + idU);
-        }
+        UsuarioModel usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new RecursoNoEncontradoException("No se encuentra el usuario " + idUsuario));
+        return miraRepository.findByIdUsuario(usuario);
     }
 
-    @Autowired
-    IDocumentoRepository documentoRepository;
-
     @Override
-    public List<MiraModel> obtenerMiraByDocumento(Integer idDocumento){
-            int idDoc;
-            idDoc = idDocumento;
-            Optional<DocumentoModel> documentoOpt = documentoRepository.findById(idDoc);
-            if (documentoOpt.isPresent()) {
-                String nombreDocumento = documentoOpt.get().getTituloDoc();
-                Optional<MiraModel> miraOpt = miraRepository.findByIdDocumento(new DocumentoModel(idDoc));
-                return miraOpt.map(Collections::singletonList).orElse(Collections.emptyList());
-            }else{
-                throw new RecursoNoEncontradoException("No se encuentra el documento" + idDoc);
-            }
-        }
+    public List<MiraModel> obtenerMiraByDocumento(Integer idDocumento) {
+        DocumentoModel documento = documentoRepository.findById(idDocumento)
+                .orElseThrow(() -> new RecursoNoEncontradoException("No se encuentra el documento " + idDocumento));
+        return miraRepository.findByIdDocumento(documento);
+    }
 
     @Override
     public String crearMira(MiraModel mira) {
-        String nombreDocumento;
-        String nombreUsuario;
-        int idUsuario;
-        int idDocumento;
-        nombreDocumento = documentoRepository.findById(mira.getIdDocumento().getIdDocumento()).get().getTituloDoc();
-        nombreUsuario = usuarioRepository.findById(mira.getIdUsuario().getIdUsuario()).get().getNombreUsuario();
-        idUsuario = mira.getIdUsuario().getIdUsuario();
-        idDocumento = mira.getIdDocumento().getIdDocumento();
+        int idUsuario = mira.getIdUsuario().getIdUsuario();
+        int idDocumento = mira.getIdDocumento().getIdDocumento();
+        mira.setFechaMira(LocalDateTime.now());
 
-        Optional<MiraModel> miraOpt = miraRepository.findByIdDocumentoAndIdUsuario(new UsuarioModel(idUsuario), new DocumentoModel(idDocumento));
+        DocumentoModel documento = documentoRepository.findById(idDocumento)
+                .orElseThrow(() -> new RecursoNoEncontradoException("No se encuentra el documento " + idDocumento));
+        UsuarioModel usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new RecursoNoEncontradoException("No se encuentra el usuario " + idUsuario));
+
+        Optional<MiraModel> miraOpt = miraRepository.findByIdDocumentoAndIdUsuario(documento, usuario);
         if (miraOpt.isPresent()) {
-            throw  new RecursoExistente("El Documento "+ nombreDocumento+ " ya ha sido observado por"+ nombreUsuario );
+            throw new RecursoExistente("El Documento " + documento.getTituloDoc() + " ya ha sido observado por " + usuario.getNombreUsuario());
         }
         miraRepository.save(mira);
         return "Se ha creado exitosamente el registro de mira";
     }
-    }
+}
