@@ -1,5 +1,7 @@
 package com.example.apiDocsTICS.Controller;
 
+import com.example.apiDocsTICS.Exception.RecursoExistente;
+import com.example.apiDocsTICS.Exception.ValoracionIncorrecta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,33 +27,46 @@ public class ValoraController {
     @Autowired
     IValoraService valoraService;
 
-    @PostMapping("/post")
+    @PostMapping("/crear")
     public ResponseEntity<String> crearValoracion(@RequestBody ValoraModel valora) {
+        try {
         return new ResponseEntity<>(valoraService.crearValoracion(valora), HttpStatus.OK);
+        }catch (ValoracionIncorrecta e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }catch (RecursoNoEncontradoException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }catch (RecursoExistente e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
     }
     
-    @DeleteMapping("/delete/{idValora}")
+    @DeleteMapping("/eliminar/{idValora}")
     public ResponseEntity<?> eliminarValoracionPorId(@PathVariable int idValora) {
         try {
             valoraService.eliminarValoracionPorId(idValora);
             return ResponseEntity.ok().build();
         } catch (RecursoNoEncontradoException e){
-            String mensajeError = e.getMessage();
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(mensajeError);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
-    @PutMapping("/put/{idValora}")
+    @PutMapping("/editar/{idValora}")
     public ResponseEntity<?> modificarValoracionPorId(@PathVariable int idValora, @RequestBody ValoraModel valora) {
-        Object valoraActualizada = valoraService.modificarValoracionPorId(idValora, valora);
-        if (valoraActualizada != null) {
-            return ResponseEntity.ok().body(valoraActualizada);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Valoracion no encontrada con el Id " + idValora);
+        try {
+            Object valoraActualizada = valoraService.modificarValoracionPorId(idValora, valora);
+            if (valoraActualizada != null) {
+                return ResponseEntity.ok().body(valoraActualizada);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Valoracion no encontrada con el Id " + idValora);
+            }
+        }catch (RecursoNoEncontradoException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (ValoracionIncorrecta e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 
-    @GetMapping("/get/{idValora}")
+    @GetMapping("/obtener/{idValora}")
     public ResponseEntity<?> obtenerValoracionPorId(@PathVariable int idValora) {
         try {
             ValoraModel valora = valoraService.obtenerValoracionPorId(idValora);
@@ -61,12 +76,8 @@ public class ValoraController {
         }
     }
 
-    @GetMapping("/get")
+    @GetMapping("/obtener")
     public ResponseEntity<?> obtenerValoraciones() {
-    try {
         return ResponseEntity.ok().body(valoraService.obtenerValoraciones());
-    } catch (RecursoNoEncontradoException e){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-    }
     }
 }
