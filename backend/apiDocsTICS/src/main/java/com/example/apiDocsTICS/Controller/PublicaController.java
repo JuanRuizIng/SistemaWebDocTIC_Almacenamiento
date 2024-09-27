@@ -1,5 +1,6 @@
 package com.example.apiDocsTICS.Controller;
 
+import com.example.apiDocsTICS.Exception.RecursoNoEncontradoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,11 @@ public class PublicaController {
 
     @PostMapping("/crear")
     public ResponseEntity<String> crearPublicacion(@RequestBody PublicaModel publicacion) {
-        return new ResponseEntity<>(publicaService.crearPublicacion(publicacion), HttpStatus.CREATED);
+        try {
+            return new ResponseEntity<>(publicaService.crearPublicacion(publicacion), HttpStatus.CREATED);
+        } catch (RecursoNoEncontradoException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/obtener/{id}")

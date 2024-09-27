@@ -21,11 +21,17 @@ public class ContrasenaController {
             return new ResponseEntity<>(contrasenaActiva, HttpStatus.OK);
         } catch (RecursoNoEncontradoException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>("La peticion que intenta hacer se ha escrito de forma incorrecta \n"+"["+e.getMessage()+"]", HttpStatus.BAD_REQUEST);
         }
     }
     @PostMapping("/crear")
     public ResponseEntity<String> crearContrasena(@RequestBody ContrasenaModel contrasena){
+        try{
         return new ResponseEntity<>(contrasenaService.crearContrasena(contrasena), HttpStatus.OK);
+        }catch (NullPointerException e){
+            return new ResponseEntity<>("La peticion que intenta hacer se ha escrito de forma incorrecta \n"+"["+e.getMessage()+"]", HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

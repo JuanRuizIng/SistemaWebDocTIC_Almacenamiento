@@ -21,7 +21,13 @@ public class MiraController {
 
     @PostMapping("/crear")
     public ResponseEntity<String> crearMira(@RequestBody MiraModel mira) {
-        return new ResponseEntity<>(miraService.crearMira(mira), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(miraService.crearMira(mira), HttpStatus.OK);
+        }catch (RecursoNoEncontradoException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/obtener/documento/{idDocumento}")
