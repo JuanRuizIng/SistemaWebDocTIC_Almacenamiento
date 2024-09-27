@@ -26,8 +26,12 @@ public class PublicaController {
     }
 
     @GetMapping("/obtener/{id}")
-    public ResponseEntity<PublicaModel> obtenerPublicacionPorId(@PathVariable int id) {
-        return new ResponseEntity<>(publicaService.obtenerPublicacionPorId(id), HttpStatus.OK);
+    public ResponseEntity<?> obtenerPublicacionPorId(@PathVariable int id) {
+        try {
+            return new ResponseEntity<>(publicaService.obtenerPublicacionPorId(id), HttpStatus.OK);
+        } catch (RecursoNoEncontradoException e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/todas")
@@ -37,11 +41,19 @@ public class PublicaController {
 
     @PutMapping("/modificar/{id}")
     public ResponseEntity<String> modificarPublicacion(@PathVariable int id, @RequestBody PublicaModel publicacion) {
-        return new ResponseEntity<>(publicaService.modificarPublicacionPorId(id, publicacion), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(publicaService.modificarPublicacionPorId(id, publicacion), HttpStatus.OK);
+        } catch (RecursoNoEncontradoException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<String> eliminarPublicacion(@PathVariable int id) {
-        return new ResponseEntity<>(publicaService.eliminarPublicacionPorId(id), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(publicaService.eliminarPublicacionPorId(id), HttpStatus.OK);
+        } catch (RecursoNoEncontradoException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 }
