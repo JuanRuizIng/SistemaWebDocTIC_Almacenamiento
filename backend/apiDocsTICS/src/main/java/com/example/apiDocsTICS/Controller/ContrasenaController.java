@@ -29,9 +29,12 @@ public class ContrasenaController {
     public ResponseEntity<String> crearContrasena(@RequestBody ContrasenaModel contrasena){
         try{
         return new ResponseEntity<>(contrasenaService.crearContrasena(contrasena), HttpStatus.OK);
-        }catch (NullPointerException e){
-            return new ResponseEntity<>("La peticion que intenta hacer se ha escrito de forma incorrecta \n"+"["+e.getMessage()+"]", HttpStatus.BAD_REQUEST);
+        }catch (RecursoNoEncontradoException e){
+            return new ResponseEntity<>("La peticion que intenta hacer se ha escrito de forma incorrecta \n"+"["+e.getMessage()+"]", HttpStatus.NOT_FOUND);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
+
     }
 
 }
