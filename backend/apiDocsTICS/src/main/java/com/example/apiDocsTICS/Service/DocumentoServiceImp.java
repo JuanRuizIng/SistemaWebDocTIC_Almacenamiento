@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import com.example.apiDocsTICS.Exception.ForeignKeyConstraintException;
 import com.example.apiDocsTICS.Exception.RecursoNoEncontradoException;
 import com.example.apiDocsTICS.Model.DocumentoModel;
 import com.example.apiDocsTICS.Repository.IDocumentoRepository;
@@ -15,8 +17,12 @@ public class DocumentoServiceImp implements IDocumentoService {
     @Autowired IDocumentoRepository documentoRepository;
     @Override
     public String crearDocumento(DocumentoModel documento) {
-        documentoRepository.save(documento);
-        return "El documento con id " + documento.getIdDocumento() + " y titulo " + documento.getTituloDoc() + " ha sido creado";
+        try {
+            documentoRepository.save(documento);
+            return "El documento con id " + documento.getIdDocumento() + " y titulo " + documento.getTituloDoc() + " ha sido creado";
+        } catch (DataIntegrityViolationException e) {
+            throw new ForeignKeyConstraintException("Error. No se encontró la categoría con ID: " + documento.getIdCategoria().getIdCategoria());
+        }
     }
 
     @Override
@@ -32,18 +38,22 @@ public class DocumentoServiceImp implements IDocumentoService {
 
     @Override
     public String modificarDocumentoPorId(int idDocumento, DocumentoModel documentoNuevo) {
-        Optional<DocumentoModel> documentoEncontrado = documentoRepository.findById(idDocumento);
-        if (documentoEncontrado.isPresent()) {
-            DocumentoModel documento = documentoEncontrado.get();
-            documento.setTituloDoc(documentoNuevo.getTituloDoc());
-            documento.setVisibilidad(documentoNuevo.getVisibilidad());
-            documento.setURL(documentoNuevo.getURL());
-            documento.setDescripcion(documentoNuevo.getDescripcion());
-            documento.setIdCategoria(documentoNuevo.getIdCategoria());
-            documentoRepository.save(documento);  // Guardar los cambios
-            return "El documento con id " + idDocumento + " ha sido modificado";
-        } else {
-            throw new RecursoNoEncontradoException("Documento no encontrado con el Id " + idDocumento);
+        try {
+            Optional<DocumentoModel> documentoEncontrado = documentoRepository.findById(idDocumento);
+            if (documentoEncontrado.isPresent()) {
+                DocumentoModel documento = documentoEncontrado.get();
+                documento.setTituloDoc(documentoNuevo.getTituloDoc());
+                documento.setVisibilidad(documentoNuevo.getVisibilidad());
+                documento.setURL(documentoNuevo.getURL());
+                documento.setDescripcion(documentoNuevo.getDescripcion());
+                documento.setIdCategoria(documentoNuevo.getIdCategoria());
+                documentoRepository.save(documento);
+                return "El documento con id " + idDocumento + " ha sido modificado";
+            } else {
+                throw new RecursoNoEncontradoException("Documento no encontrado con el Id " + idDocumento);
+            }
+        } catch (DataIntegrityViolationException e) {
+            throw new ForeignKeyConstraintException("Error. No se encontró la categoría con ID: " + documentoNuevo.getIdCategoria().getIdCategoria());
         }
     }
 

@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `SistemaWebDocTICSchema`.`Categoria` (
   CONSTRAINT `fk_Categoria_Categoria1`
     FOREIGN KEY (`subIdCategoria`)
     REFERENCES `SistemaWebDocTICSchema`.`Categoria` (`idCategoria`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `SistemaWebDocTICSchema`.`Documento` (
   CONSTRAINT `fk_Documento_Categoria1`
     FOREIGN KEY (`idCategoria`)
     REFERENCES `SistemaWebDocTICSchema`.`Categoria` (`idCategoria`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -107,17 +107,17 @@ CREATE TABLE IF NOT EXISTS `SistemaWebDocTICSchema`.`Comentario` (
   CONSTRAINT `fk_Comentario_Usuario1`
     FOREIGN KEY (`idUsuario`)
     REFERENCES `SistemaWebDocTICSchema`.`Usuario` (`idUsuario`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Comentario_Documento1`
     FOREIGN KEY (`idDocumento`)
     REFERENCES `SistemaWebDocTICSchema`.`Documento` (`idDocumento`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Comentario_Comentario1`
     FOREIGN KEY (`subidComentario`)
     REFERENCES `SistemaWebDocTICSchema`.`Comentario` (`idComentario`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -137,12 +137,12 @@ CREATE TABLE IF NOT EXISTS `SistemaWebDocTICSchema`.`Publica` (
   CONSTRAINT `fk_Publica_Usuario1`
     FOREIGN KEY (`idUsuario`)
     REFERENCES `SistemaWebDocTICSchema`.`Usuario` (`idUsuario`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Publica_Documento1`
     FOREIGN KEY (`idDocumento`)
     REFERENCES `SistemaWebDocTICSchema`.`Documento` (`idDocumento`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -161,12 +161,12 @@ CREATE TABLE IF NOT EXISTS `SistemaWebDocTICSchema`.`Descarga` (
   CONSTRAINT `fk_Publica_Usuario10`
     FOREIGN KEY (`idUsuario`)
     REFERENCES `SistemaWebDocTICSchema`.`Usuario` (`idUsuario`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Publica_Documento10`
     FOREIGN KEY (`idDocumento`)
     REFERENCES `SistemaWebDocTICSchema`.`Documento` (`idDocumento`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -185,12 +185,12 @@ CREATE TABLE IF NOT EXISTS `SistemaWebDocTICSchema`.`Mira` (
   CONSTRAINT `fk_Publica_Usuario11`
     FOREIGN KEY (`idUsuario`)
     REFERENCES `SistemaWebDocTICSchema`.`Usuario` (`idUsuario`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Publica_Documento11`
     FOREIGN KEY (`idDocumento`)
     REFERENCES `SistemaWebDocTICSchema`.`Documento` (`idDocumento`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -211,12 +211,12 @@ CREATE TABLE IF NOT EXISTS `SistemaWebDocTICSchema`.`Valora` (
   CONSTRAINT `fk_Publica_Usuario100`
     FOREIGN KEY (`idUsuario`)
     REFERENCES `SistemaWebDocTICSchema`.`Usuario` (`idUsuario`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Publica_Documento100`
     FOREIGN KEY (`idDocumento`)
     REFERENCES `SistemaWebDocTICSchema`.`Documento` (`idDocumento`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 

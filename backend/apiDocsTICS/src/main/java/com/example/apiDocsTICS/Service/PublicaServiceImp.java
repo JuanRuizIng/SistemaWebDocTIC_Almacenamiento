@@ -8,7 +8,9 @@ import com.example.apiDocsTICS.Exception.RecursoExistente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.apiDocsTICS.Exception.RecursoNoEncontradoException;
+import com.example.apiDocsTICS.Model.DocumentoModel;
 import com.example.apiDocsTICS.Model.PublicaModel;
+import com.example.apiDocsTICS.Model.UsuarioModel;
 import com.example.apiDocsTICS.Repository.IPublicaRepository;
 import com.example.apiDocsTICS.Repository.IUsuarioRepository;
 import com.example.apiDocsTICS.Repository.IDocumentoRepository;
@@ -48,12 +50,28 @@ public class PublicaServiceImp implements IPublicaService {
 
     @Override
     public String modificarPublicacionPorId(int idPublica, PublicaModel publicacion) {
-        Optional<PublicaModel> publicacionOptional = publicaRepository.findById(idPublica);
-        if (publicacionOptional.isPresent()) {
-            publicaRepository.save(publicacion);
-            return "Publicación modificada exitosamente";
+        // Verificar si la publicación existe
+        PublicaModel publicacionExistente = publicaRepository.findById(idPublica)
+                .orElseThrow(() -> new RecursoNoEncontradoException("La publicación con id " + idPublica + " no existe"));
+
+        // Verificar si el usuario y el documento existen
+        UsuarioModel usuario = usuarioRepository.findById(publicacion.getUsuario().getIdUsuario())
+                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado con el ID " + publicacion.getUsuario().getIdUsuario()));
+        DocumentoModel documento = documentoRepository.findById(publicacion.getDocumento().getIdDocumento())
+                .orElseThrow(() -> new RecursoNoEncontradoException("Documento no encontrado con el ID " + publicacion.getDocumento().getIdDocumento()));
+
+        // Actualizar los campos de la publicación existente
+        publicacionExistente.setUsuario(usuario);
+        publicacionExistente.setDocumento(documento);
+        publicacionExistente.setRol(publicacion.getRol());
+        if (publicacion.getFechaPublicacion() == null) {
+            publicacionExistente.setFechaPublicacion(LocalDateTime.now());
+        } else {
+            publicacionExistente.setFechaPublicacion(publicacion.getFechaPublicacion());
         }
-        throw new RecursoNoEncontradoException("Publicación no encontrada");
+
+        publicaRepository.save(publicacionExistente);
+        return "Publicación modificada exitosamente";
     }
 
     @Override

@@ -55,19 +55,23 @@ public class ValoraServiceImp implements IValoraService{
 
     @Override
     public String modificarValoracionPorId(int idValora, ValoraModel valoracion) {
-        if(!(valoracion.getValoracion() <= 5 && valoracion.getValoracion() >= 1)){
-            throw new ValoracionIncorrecta("La valoracion debe estar entre 1 y 5");
+        // Validar que la valoración esté entre 1 y 5
+        if (!(valoracion.getValoracion() <= 5 && valoracion.getValoracion() >= 1)) {
+            throw new ValoracionIncorrecta("La valoración debe estar entre 1 y 5");
         }
+    
+        // Buscar la valoración existente por su ID
         Optional<ValoraModel> valoracionEncontrada = valoraRepository.findById(idValora);
         if (valoracionEncontrada.isPresent()) {
             ValoraModel valoracionModificada = valoracionEncontrada.get();
             valoracionModificada.setValoracion(valoracion.getValoracion());
             valoracionModificada.setIdDocumento(valoracion.getIdDocumento());
             valoracionModificada.setIdUsuario(valoracion.getIdUsuario());
+            valoracionModificada.setFechaValoracion(LocalDateTime.now()); // Establecer la fecha de valoración a ahora
             valoraRepository.save(valoracionModificada);
-            return "La valoracion con Id "+ idValora + " fue modificada con exito";
+            return "La valoración con Id " + idValora + " fue modificada con éxito";
         } else {
-            throw new RecursoNoEncontradoException("Valoracion no encontrada con el Id " + idValora);
+            throw new RecursoNoEncontradoException("Valoración no encontrada con el Id " + idValora);
         }
     }
 

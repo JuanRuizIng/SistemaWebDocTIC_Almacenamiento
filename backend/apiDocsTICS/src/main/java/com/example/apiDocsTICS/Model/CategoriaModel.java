@@ -22,6 +22,6 @@ public class CategoriaModel {
     private Integer idCategoria;
     private String nombre;
     @ManyToOne
-    @JoinColumn(name = "subidCategoria")
-    private CategoriaModel subidCategoria;
+    @JoinColumn(name = "subIdCategoria")
+    private CategoriaModel subIdCategoria;
 }
