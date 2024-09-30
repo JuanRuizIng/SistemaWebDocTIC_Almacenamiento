@@ -155,7 +155,8 @@ DELIMITER //
 
 CREATE PROCEDURE listar_publicaciones_por_fecha(IN fecha_inicio DATE, IN fecha_fin DATE)
 BEGIN
-    SELECT p.idPublica, p.fechaPublicacion, u.nombreUsuario, d.tituloDoc
+    SELECT p.idPublica, p.fechaPublicacion, u.nombreUsuario
+    rio, d.tituloDoc
     FROM Publica p
     INNER JOIN Usuario u ON p.idUsuario = u.idUsuario
     INNER JOIN Documento d ON p.idDocumento = d.idDocumento
