@@ -111,6 +111,43 @@ BEGIN
 END //
 
 DELIMITER ;
+-- ---------------------------------------------------------------------------------------------
+-- Procedimientos almacenados
+
+-- Procedimiento: insertarContrasena
+DELIMITER //
+
+-- Crear el procedimiento almacenado
+CREATE PROCEDURE insertarContrasena(
+    IN p_contrasena VARCHAR(255),
+    IN p_estado VARCHAR(10),
+    IN p_idUsuario INT
+)
+BEGIN
+    -- Verificamos si el usuario ya tiene una contraseña activa
+    IF EXISTS (
+        SELECT 1
+        FROM contrasena
+        WHERE idUsuario = p_idUsuario
+        AND estado = 'activa'
+    ) THEN
+        -- Cambiamos la contraseña activa existente a inactiva
+        UPDATE contrasena
+        SET estado = 'inactiva'
+        WHERE idUsuario = p_idUsuario
+        AND estado = 'activa';
+    END IF;
+
+    -- Insertamos la nueva contraseña
+    INSERT INTO contrasena (contrasena, estado, fecha, idUsuario)
+    VALUES (p_contrasena, p_estado, NOW(), p_idUsuario);
+END //
+
+DELIMITER ;
+
+-- Llamar al procedimiento almacenado
+CALL insertarContrasena('NewPassw0rd!', 'activa', 1);
+
 
 -- Procedimiento: listar_documentos_por_categoria
 -- Este procedimiento lista todos los documentos que pertenecen a una categoría específica.
